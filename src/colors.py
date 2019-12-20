@@ -1,3 +1,5 @@
+# Just some colors presets that are used in the game
+
 WHITE = (255, 255, 255) 
 BLACK = (0, 0, 0) 
 GREEN = (32, 194, 37)
