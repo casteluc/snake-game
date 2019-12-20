@@ -8,14 +8,14 @@ UP, RIGHT, DOWN, LEFT = 0, 1, 2, 3
 screenSize = WIDTH, HEIGHT = 560, 660
 
 class Snake():
-    def __init__(self, screen):
+    def __init__(self, body, color, screen):
         self.screen = screen
-        self.body = [(260, 320), (280, 320), (300, 320), (320, 320)]
+        self.body = body
         self.size = 20
         self.bodySurface = pygame.Surface((self.size, self.size))
-        self.bodySurface.fill(colors.GREEN)
+        self.bodySurface.fill(color)
         self.direction = LEFT
-        self.score = 0
+        self.color = color
     
     def draw(self):
         for pos in self.body:
@@ -34,10 +34,16 @@ class Snake():
         if self.direction == LEFT:
             self.body[0] = (self.body[0][0] - self.size, self.body[0][1])
     
-    def selfCollided(self):
-        for e in range(1, len(self.body)):
-            if self.body[0] == self.body[e]:
-                return True
+    def collidedSnake(self, snakes):
+        for s in snakes:
+            if self == s:
+                for e in range(1, len(s.body)):
+                    if self.body[0] == s.body[e]:
+                        return True
+            else:
+                for e in range(0, len(s.body)):
+                    if self.body[0] == s.body[e]:
+                        return True
         return False
 
     def checkBorderCollision(self):
@@ -55,8 +61,8 @@ class Snake():
             appleSound.play()
             self.body.append(self.body[len(self.body) - 1])
             apple.updatePos(self)
-            self.score += 10
-
+            return True
+        return False
 
 class Apple():
     def __init__(self, screen):
