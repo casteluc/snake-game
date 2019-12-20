@@ -1,4 +1,4 @@
-import pygame, random, end, colors
+import pygame, random, colors
 
 UP, RIGHT, DOWN, LEFT = 0, 1, 2, 3
 
@@ -12,6 +12,7 @@ class Snake():
         self.surface = pygame.Surface((self.size, self.size))
         self.surface.fill(colors.GREEN)
         self.direction = LEFT
+        self.score = 0
     
     def draw(self):
         for pos in self.body:
@@ -42,18 +43,20 @@ class Snake():
         elif self.body[0][0] < 0:
             self.body[0] = (WIDTH - self.size, self.body[0][1])
         elif self.body[0][1] >= HEIGHT:
-            self.body[0] = (self.body[0][0], 0)
-        elif self.body[0][1] < 0:
+            self.body[0] = (self.body[0][0], 20)
+        elif self.body[0][1] < 20:
             self.body[0] = (self.body[0][0], HEIGHT - self.size)
 
     def checkAppleCollision(self, apple):
         if self.body[0] == apple.pos:
             self.body.append(self.body[len(self.body) - 1])
-            apple.updatePos()
+            apple.updatePos(self)
+            self.score += 10
+
 
 class Apple():
     def __init__(self, screen):
-        self.pos = (random.randrange(0, WIDTH - 20, 20), random.randrange(0, HEIGHT - 20, 20))
+        self.pos = (random.randrange(0, WIDTH - 20, 20), random.randrange(20, 300, 20))
         self.size = 20
         self.surface = pygame.Surface((self.size, self.size))
         self.surface.fill(colors.RED)
@@ -62,6 +65,18 @@ class Apple():
     def draw(self):
         self.screen.blit(self.surface, self.pos)
 
-    def updatePos(self):
-        self.pos = (random.randrange(0, WIDTH - 20, 20), random.randrange(0, HEIGHT - 20, 20))
+    def updatePos(self, snake):
+        posIsEqual = False
+        self.pos = (random.randrange(0, WIDTH - 20, 20), random.randrange(20, HEIGHT - 20, 20))
+        for snakePos in range(len(snake.body)):
+            if self.pos == snakePos:
+                posIsEqual = True
+        
+        while posIsEqual:
+            self.pos = (random.randrange(0, WIDTH - 20, 20), random.randrange(20, HEIGHT - 20, 20))
+            for snakePos in range(len(snake.body)):
+                if self.pos == snakePos:
+                    posIsEqual = True
+                else:
+                    posIsEqual = False
         

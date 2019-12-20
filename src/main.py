@@ -35,11 +35,21 @@ def drawGrid():
     for e in range(20, HEIGHT, 20):
         pygame.draw.line(screen, colors.GRAY, (0, e), (WIDTH, e))
 
+def drawScore():
+    pygame.draw.line(screen, colors.BLACK, (0, 0), (WIDTH, 0), 40)
+    scoreFont = pygame.font.Font("freesansbold.ttf", 18)
+    scoreText = scoreFont.render("Score: %d" % snake.score, True, (255, 255, 255)) 
+    scoreTextRect = scoreText.get_rect()
+    scoreTextRect.center = (60, 10)
+
+    screen.blit(scoreText, scoreTextRect)
+
 def renderScreen():
     screen.fill(colors.BLACK)
     snake.draw()
     apple.draw()
     drawGrid()
+    drawScore()
     pygame.display.update()
     
 while True:
