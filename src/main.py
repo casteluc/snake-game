@@ -10,7 +10,9 @@ UP, RIGHT, DOWN, LEFT = 0, 1, 2, 3
 screenSize = WIDTH, HEIGHT = 560, 660
 screen = pygame.display.set_mode(screenSize)
 pygame.display.set_caption("Snake Game")
+
 snake = entities.Snake(screen)
+apple = entities.Apple(screen)
 
 def drawGrid():
     for e in range(20, WIDTH, 20):
@@ -21,6 +23,7 @@ def drawGrid():
 def renderScreen():
     screen.fill((0, 0, 0))
     snake.draw()
+    apple.draw()
     drawGrid()
     pygame.display.update()
     
@@ -43,5 +46,8 @@ while True:
                 snake.direction = LEFT
 
     snake.move()
-
+    snake.checkBorderCollision()
+    snake.checkSelfCollision()
+    snake.checkAppleCollision(apple)
+    
     renderScreen()
