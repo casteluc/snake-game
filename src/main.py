@@ -148,6 +148,8 @@ while True:
         if s.collidedSnake(snakes):
             snakes.remove(s)
             if gamemode == MULTI:
+                for sc in snakes:
+                    sc.move()
                 renderScreen()
             gameOver()
 
