@@ -1,5 +1,8 @@
 import pygame, random, colors
 
+pygame.mixer.init()
+appleSound = pygame.mixer.Sound("C:\casteluc\Coding\snakeGame\sounds\soundApple.wav")
+
 UP, RIGHT, DOWN, LEFT = 0, 1, 2, 3
 
 screenSize = WIDTH, HEIGHT = 560, 660
@@ -9,14 +12,14 @@ class Snake():
         self.screen = screen
         self.body = [(260, 320), (280, 320), (300, 320), (320, 320)]
         self.size = 20
-        self.surface = pygame.Surface((self.size, self.size))
-        self.surface.fill(colors.GREEN)
+        self.bodySurface = pygame.Surface((self.size, self.size))
+        self.bodySurface.fill(colors.GREEN)
         self.direction = LEFT
         self.score = 0
     
     def draw(self):
         for pos in self.body:
-            self.screen.blit(self.surface, pos)
+            self.screen.blit(self.bodySurface, pos)
     
     def move(self):
         for e in range(len(self.body) - 1, 0, -1):
@@ -49,6 +52,7 @@ class Snake():
 
     def checkAppleCollision(self, apple):
         if self.body[0] == apple.pos:
+            appleSound.play()
             self.body.append(self.body[len(self.body) - 1])
             apple.updatePos(self)
             self.score += 10
@@ -75,7 +79,7 @@ class Apple():
         while posIsEqual:
             self.pos = (random.randrange(0, WIDTH - 20, 20), random.randrange(20, HEIGHT - 20, 20))
             for snakePos in range(len(snake.body)):
-                if self.pos == snakePos:
+                if self.pos == snake[snakePos]:
                     posIsEqual = True
                 else:
                     posIsEqual = False

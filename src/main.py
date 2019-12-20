@@ -2,6 +2,9 @@ import pygame, sys, entities, colors, time
 from pygame.locals import *
 
 pygame.init()
+pygame.mixer.init()
+
+gameOverSound = pygame.mixer.Sound("C:\casteluc\Coding\snakeGame\sounds\gameOver.wav")
 clock = pygame.time.Clock()
 
 UP, RIGHT, DOWN, LEFT = 0, 1, 2, 3
@@ -14,6 +17,7 @@ snake = entities.Snake(screen)
 apple = entities.Apple(screen)
 
 def gameOver():
+    gameOverSound.play()
     time.sleep(1)
     overFont = pygame.font.Font("freesansbold.ttf", 72)
     overText = overFont.render("GAME OVER", True, (255, 255, 255)) 
@@ -54,6 +58,7 @@ def renderScreen():
     
 while True:
     clock.tick(10)
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT: sys.exit()
 
