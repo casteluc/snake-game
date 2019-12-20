@@ -1,6 +1,5 @@
-import pygame, random, end
+import pygame, random, end, colors
 
-WHITE, BLACK, GREEN, RED  = (255, 255, 255), (0, 0, 0), (0, 255, 0), (255, 0, 0) 
 UP, RIGHT, DOWN, LEFT = 0, 1, 2, 3
 
 screenSize = WIDTH, HEIGHT = 560, 660
@@ -11,7 +10,7 @@ class Snake():
         self.body = [(260, 320), (280, 320), (300, 320), (320, 320)]
         self.size = 20
         self.surface = pygame.Surface((self.size, self.size))
-        self.surface.fill(GREEN)
+        self.surface.fill(colors.GREEN)
         self.direction = LEFT
     
     def draw(self):
@@ -31,10 +30,11 @@ class Snake():
         if self.direction == LEFT:
             self.body[0] = (self.body[0][0] - self.size, self.body[0][1])
     
-    def checkSelfCollision(self):
+    def selfCollided(self):
         for e in range(1, len(self.body)):
             if self.body[0] == self.body[e]:
-                end.gameOver()
+                return True
+        return False
 
     def checkBorderCollision(self):
         if self.body[0][0] >= WIDTH:
@@ -56,7 +56,7 @@ class Apple():
         self.pos = (random.randrange(0, WIDTH - 20, 20), random.randrange(0, HEIGHT - 20, 20))
         self.size = 20
         self.surface = pygame.Surface((self.size, self.size))
-        self.surface.fill(RED)
+        self.surface.fill(colors.RED)
         self.screen = screen
 
     def draw(self):
